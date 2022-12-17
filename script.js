@@ -2,7 +2,7 @@ const addBtn = document.querySelector(".add");
 
 const notes = JSON.parse(localStorage.getItem("notes"));
 
-const addNewnote = (text) => {
+const addNewnote = (text = "") => {
   const note = document.createElement("div");
   note.classList.add("note");
   note.innerHTML = `
@@ -12,8 +12,8 @@ const addNewnote = (text) => {
             <button class="delete"><i class="fas fa-trash-alt"></i></button>
           </div>
         
-          <div class="main hidden"></div>
-          <textarea></textarea>
+          <div class="main ${text ? "" : "hidden"}"></div>
+          <textarea class="${text ? "hidden" : ""}"></textarea>
         </div>`;
 
   const editBtn = note.querySelector(".edit");
@@ -23,6 +23,7 @@ const addNewnote = (text) => {
   const textArea = note.querySelector("textarea");
 
   textArea.value = text;
+  mainTextEl.innerHTML = marked(text);
 
   editBtn.addEventListener("click", () => {
     mainTextEl.classList.toggle("hidden");
@@ -51,7 +52,9 @@ if (notes) {
   });
 }
 
-addBtn.addEventListener("click", addNewnote);
+addBtn.addEventListener("click", () => {
+  addNewnote();
+});
 
 const updateLocal = () => {
   const notesText = document.querySelectorAll("textarea");
